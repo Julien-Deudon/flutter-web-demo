@@ -16,7 +16,9 @@ class AppRouter {
       ),
       GoRoute(
         path: '/posts/:id',
-        builder: (context, state) => const PostsDetailPage(),
+        builder: (context, state) => PostsDetailPage(
+          postId: state.params['id'] ?? '1',
+        ),
       ),
     ],
   );
