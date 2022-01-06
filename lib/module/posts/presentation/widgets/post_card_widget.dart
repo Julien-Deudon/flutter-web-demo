@@ -21,12 +21,15 @@ class PostCardWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: GFCard(
-          // shape: RoundedRectangleBorder(
-          //   side: BorderSide(color: Theme.of(context).primaryColor),
-          //   borderRadius: BorderRadius.circular(8),
-          // ),
           title: GFListTile(
-            titleText: post.title,
+            title: Text(
+              post.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            avatar: const Icon(
+              Icons.feed,
+              size: 32,
+            ),
           ),
           content: Text(post.body),
           buttonBar: GFButtonBar(children: [

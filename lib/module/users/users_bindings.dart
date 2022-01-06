@@ -1,4 +1,4 @@
-import 'package:flutter_web/core/providers/global_provider.dart';
+import 'package:flutter_web/core/providers/global_provider_binding.dart';
 import 'package:flutter_web/module/users/data/datasource/users_remote_datasource.dart';
 import 'package:flutter_web/module/users/data/models/user_model.dart';
 import 'package:flutter_web/module/users/data/repository/users_repository.dart';

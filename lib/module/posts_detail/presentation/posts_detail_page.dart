@@ -11,29 +11,30 @@ class PostsDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     print(postId);
     return Scaffold(
+        appBar: AppBar(),
         body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ref.watch(postDetailControllerProvider(postId)).when(
-                data: (data) => Text(data.title),
-                error: (error, _) => Text(error.toString()),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-          ref.watch(postDetailCommentsControllerProvider(postId)).when(
-                data: (data) => ListView(
-                  shrinkWrap: true,
-                  children: data.map((e) => Text(e.email)).toList(),
-                ),
-                error: (error, _) => Text(error.toString()),
-                loading: () => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-        ],
-      ),
-    ));
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ref.watch(postDetailControllerProvider(postId)).when(
+                    data: (data) => Text(data.title),
+                    error: (error, _) => Text(error.toString()),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+              ref.watch(postDetailCommentsControllerProvider(postId)).when(
+                    data: (data) => ListView(
+                      shrinkWrap: true,
+                      children: data.map((e) => Text(e.email)).toList(),
+                    ),
+                    error: (error, _) => Text(error.toString()),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+            ],
+          ),
+        ));
   }
 }

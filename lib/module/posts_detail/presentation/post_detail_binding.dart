@@ -1,4 +1,4 @@
-import 'package:flutter_web/core/providers/global_provider.dart';
+import 'package:flutter_web/core/providers/global_provider_binding.dart';
 import 'package:flutter_web/module/posts_detail/data/datasource/post_detail_remote_datasource.dart';
 import 'package:flutter_web/module/posts_detail/data/models/post_comment_model.dart';
 import 'package:flutter_web/module/posts_detail/data/models/post_detail_model.dart';

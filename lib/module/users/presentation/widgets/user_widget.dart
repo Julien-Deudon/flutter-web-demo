@@ -16,9 +16,15 @@ class UserWidget extends StatelessWidget {
       height: 250,
       child: GFCard(
         title: GFListTile(
-          title: Text(user.name),
+          title: Text(
+            user.name,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           subTitle: Text(user.email),
-          avatar: const Icon(Icons.person),
+          avatar: const Icon(
+            Icons.person,
+            size: 32,
+          ),
         ),
         content: SizedBox(
           width: double.infinity,

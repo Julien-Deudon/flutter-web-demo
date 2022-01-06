@@ -1,4 +1,4 @@
-import 'package:flutter_web/core/providers/global_provider.dart';
+import 'package:flutter_web/core/providers/global_provider_binding.dart';
 import 'package:flutter_web/module/posts/data/datasource/posts_remote_datasource.dart';
 import 'package:flutter_web/module/posts/data/models/post.dart';
 import 'package:flutter_web/module/posts/data/repository/posts_repository.dart';
