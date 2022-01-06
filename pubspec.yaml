@@ -40,6 +40,10 @@ dependencies:
   dartz: ^0.10.1
   # https://pub.dev/packages/flex_color_scheme
   flex_color_scheme: ^4.1.1
+  # https://pub.dev/packages/getwidget
+  getwidget: ^2.0.4
+  # https://pub.dev/packages/salomon_bottom_bar
+  salomon_bottom_bar: ^3.2.0
   # https://pub.dev/packages/cupertino_icons
   cupertino_icons: ^1.0.4
 

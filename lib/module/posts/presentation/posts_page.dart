@@ -9,29 +9,27 @@ class PostsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Center(
-        child: ref.watch(postsControllerProvider).when(
-              data: (data) {
-                return ListView(
-                  children: data
-                      .map(
-                        (post) => PostCardWidget(
-                          post: post,
-                          onTap: (postId) {
-                            GoRouter.of(context).push('/posts/$postId');
-                          },
-                        ),
-                      )
-                      .toList(),
-                );
-              },
-              error: (err, _) => Text(err.toString()),
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
+    return Center(
+      child: ref.watch(postsControllerProvider).when(
+            data: (data) {
+              return ListView(
+                children: data
+                    .map(
+                      (post) => PostCardWidget(
+                        post: post,
+                        onTap: (postId) {
+                          GoRouter.of(context).push('/posts/$postId');
+                        },
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+            error: (err, _) => Text(err.toString()),
+            loading: () => const Center(
+              child: CircularProgressIndicator(),
             ),
-      ),
+          ),
     );
   }
 }

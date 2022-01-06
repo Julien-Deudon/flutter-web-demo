@@ -1,26 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_web/module/home/home_binding.dart';
+import 'package:flutter_web/module/posts/presentation/posts_page.dart';
+import 'package:flutter_web/module/users/presentation/users_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends ConsumerWidget {
+  HomePage({Key? key}) : super(key: key);
+
+  final PageController _controller = PageController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(navigationControllerProvider, (previous, int next) {
+      _controller.jumpToPage(next);
+    });
+
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton(
-              onPressed: () => GoRouter.of(context).push('/posts'),
-              child: const Text('Posts'),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 16),
+        child: SalomonBottomBar(
+          currentIndex: ref.watch(navigationControllerProvider),
+          onTap: (index) => ref
+              .read(navigationControllerProvider.notifier)
+              .changeIndex(index),
+          items: [
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text('Users'),
             ),
-            TextButton(
-              onPressed: () => GoRouter.of(context).push('/posts'),
-              child: const Text('Posts'),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.article),
+              title: const Text('Posts'),
+            ),
+            SalomonBottomBarItem(
+              icon: const Icon(Icons.article),
+              title: const Text('Posts'),
             ),
           ],
         ),
+      ),
+      body: PageView(
+        controller: _controller,
+        children: const [
+          UsersPage(),
+          PostsPage(),
+        ],
       ),
     );
   }
