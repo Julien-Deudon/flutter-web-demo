@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web/module/users/data/models/user_model.dart';
@@ -44,7 +46,11 @@ class UserWidget extends StatelessWidget {
           children: [
             GFButton(
               onPressed: () {
-                final String contactMethod = kIsWeb ? user.email : user.phone;
+                final String contactMethod = kIsWeb
+                    ? user.email
+                    : Platform.isIOS
+                        ? user.website
+                        : user.phone;
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -83,11 +89,23 @@ class UserWidget extends StatelessWidget {
   }
 
   void _launchContactMethod(String contactMethod) async {
-    final parsedContactMethod = kIsWeb
-        ? 'mailto:$contactMethod?subject=Hello Octogone&body=Flutter Multiplatform Demo'
-        : 'tel:$contactMethod';
+    String parsedContactMethod =
+        'mailto:$contactMethod?subject=Hello Octogone&body=Flutter Multiplatform Demo';
+
+    if (!kIsWeb) {
+      if (Platform.isAndroid) {
+        parsedContactMethod = 'tel:$contactMethod';
+      } else if (Platform.isIOS) {
+        parsedContactMethod = 'http:$contactMethod';
+      }
+    }
+
     try {
-      await launch(parsedContactMethod, enableJavaScript: true);
+      final canOpen = await canLaunch(parsedContactMethod);
+
+      if (canOpen) {
+        await launch(parsedContactMethod, enableJavaScript: kIsWeb);
+      }
     } catch (e) {
       if (kDebugMode) {
         print(e);

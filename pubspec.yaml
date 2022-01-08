@@ -48,6 +48,8 @@ dependencies:
   side_navigation: ^0.0.7
   # https://pub.dev/packages/url_launcher
   url_launcher: ^6.0.17
+  # https://pub.dev/packages/responsive_grid
+  responsive_grid: ^2.0.0
   # https://pub.dev/packages/cupertino_icons
   cupertino_icons: ^1.0.4
 
