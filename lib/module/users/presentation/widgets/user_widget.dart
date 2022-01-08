@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web/module/users/data/models/user_model.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserWidget extends StatelessWidget {
   const UserWidget({
@@ -40,12 +43,55 @@ class UserWidget extends StatelessWidget {
         buttonBar: GFButtonBar(
           children: [
             GFButton(
-              onPressed: () {},
+              onPressed: () {
+                final String contactMethod = kIsWeb ? user.email : user.phone;
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Contact'),
+                        content:
+                            Text('Contact ${user.name} on $contactMethod ? '),
+                        actions: [
+                          ElevatedButton(
+                            onPressed: () {
+                              GoRouter.of(context).pop(context);
+                            },
+                            child: const Text('No'),
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.red),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _launchContactMethod(contactMethod);
+                              GoRouter.of(context).pop(context);
+                            },
+                            child: const Text('Yes'),
+                          ),
+                        ],
+                      );
+                    });
+              },
               text: 'Contact',
             )
           ],
         ),
       ),
     );
+  }
+
+  void _launchContactMethod(String contactMethod) async {
+    final parsedContactMethod = kIsWeb
+        ? 'mailto:$contactMethod?subject=Hello Octogone&body=Flutter Multiplatform Demo'
+        : 'tel:$contactMethod';
+    try {
+      await launch(parsedContactMethod, enableJavaScript: true);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 }
