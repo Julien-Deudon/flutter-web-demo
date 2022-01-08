@@ -46,11 +46,7 @@ class UserWidget extends StatelessWidget {
           children: [
             GFButton(
               onPressed: () {
-                final String contactMethod = kIsWeb
-                    ? user.email
-                    : Platform.isIOS
-                        ? user.website
-                        : user.phone;
+                final String contactMethod = _getContactMethod(user);
                 showDialog(
                     context: context,
                     builder: (context) {
@@ -89,8 +85,14 @@ class UserWidget extends StatelessWidget {
   }
 
   void _launchContactMethod(String contactMethod) async {
-    String parsedContactMethod =
-        'mailto:$contactMethod?subject=Hello Octogone&body=Flutter Multiplatform Demo';
+    String parsedContactMethod = Uri(
+      scheme: 'mailto',
+      path: 'smith@example.com',
+      query: encodeQueryParameters(<String, String>{
+        'subject': 'Hello Octogone',
+        'body': 'Hope you like the presentation'
+      }),
+    ).toString();
 
     if (!kIsWeb) {
       if (Platform.isAndroid) {
@@ -111,5 +113,19 @@ class UserWidget extends StatelessWidget {
         print(e);
       }
     }
+  }
+
+  String _getContactMethod(User user) {
+    if (kIsWeb || Platform.isMacOS) return user.email;
+    if (Platform.isIOS) return user.website;
+    if (Platform.isAndroid) return user.phone;
+    return user.email;
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }
