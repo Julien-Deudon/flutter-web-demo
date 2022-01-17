@@ -18,7 +18,7 @@ class UserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 250,
+      height: 258,
       child: GFCard(
         title: GFListTile(
           title: Text(

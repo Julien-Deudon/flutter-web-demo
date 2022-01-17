@@ -59,26 +59,20 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
 
     return Scaffold(
-        appBar: AppBar(),
-        bottomNavigationBar: BottomNavBarWidget(
-          currentIndex: ref.watch(navigationControllerProvider),
-          onChange: (index) => ref
-              .read(navigationControllerProvider.notifier)
-              .changeIndex(index),
-        ),
-        body: Row(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: _controller,
-                children: const [
-                  UsersPage(),
-                  PostsPage(),
-                  SettingsPage(),
-                ],
-              ),
-            ),
-          ],
-        ));
+      appBar: AppBar(),
+      bottomNavigationBar: BottomNavBarWidget(
+        currentIndex: ref.watch(navigationControllerProvider),
+        onChange: (index) =>
+            ref.read(navigationControllerProvider.notifier).changeIndex(index),
+      ),
+      body: PageView(
+        controller: _controller,
+        children: const [
+          UsersPage(),
+          PostsPage(),
+          SettingsPage(),
+        ],
+      ),
+    );
   }
 }
