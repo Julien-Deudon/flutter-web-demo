@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web/core/const/breakpoints.dart';
 import 'package:flutter_web/module/home/home_binding.dart';
 import 'package:flutter_web/module/home/presentation/widgets/bottom_nav_bar_widget.dart';
+import 'package:flutter_web/module/home/presentation/widgets/side_nav_widget.dart';
 import 'package:flutter_web/module/posts/presentation/posts_page.dart';
 import 'package:flutter_web/module/settings/presentation/settings_page.dart';
 import 'package:flutter_web/module/users/presentation/users_page.dart';
@@ -37,6 +39,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     ref.listen(navigationControllerProvider, (previous, int next) {
       switch (next) {
         case 0:
@@ -59,20 +63,35 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
 
     return Scaffold(
-      appBar: AppBar(),
-      bottomNavigationBar: BottomNavBarWidget(
-        currentIndex: ref.watch(navigationControllerProvider),
-        onChange: (index) =>
-            ref.read(navigationControllerProvider.notifier).changeIndex(index),
-      ),
-      body: PageView(
-        controller: _controller,
-        children: const [
-          UsersPage(),
-          PostsPage(),
-          SettingsPage(),
-        ],
-      ),
-    );
+        appBar: AppBar(),
+        bottomNavigationBar: screenWidth < kBreakPointTablet
+            ? BottomNavBarWidget(
+                currentIndex: ref.watch(navigationControllerProvider),
+                onChange: (index) => ref
+                    .read(navigationControllerProvider.notifier)
+                    .changeIndex(index),
+              )
+            : null,
+        body: Row(
+          children: [
+            if (screenWidth > kBreakPointTablet)
+              SideNavWidget(
+                onChange: (index) => ref
+                    .read(navigationControllerProvider.notifier)
+                    .changeIndex(index),
+                currentIndex: ref.watch(navigationControllerProvider),
+              ),
+            Expanded(
+              child: PageView(
+                controller: _controller,
+                children: const [
+                  UsersPage(),
+                  PostsPage(),
+                  SettingsPage(),
+                ],
+              ),
+            ),
+          ],
+        ));
   }
 }
