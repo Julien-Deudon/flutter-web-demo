@@ -16,15 +16,12 @@ class AppRouter {
         routes: [
           GoRoute(
             path: 'users',
-            //builder: (context, state) => const UsersPage(),
           ),
           GoRoute(
             path: 'posts',
-            //builder: (context, state) => const PostsPage(),
           ),
           GoRoute(
             path: 'settings',
-            //builder: (context, state) => const SettingsPage(),
           ),
         ],
       ),

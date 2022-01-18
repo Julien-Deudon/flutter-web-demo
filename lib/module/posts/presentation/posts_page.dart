@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web/module/posts/posts_binding.dart';
-import 'package:flutter_web/module/posts/presentation/widgets/post_card_widget.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_web/module/posts/presentation/views/post_mobile_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PostsPage extends ConsumerWidget {
@@ -12,18 +11,7 @@ class PostsPage extends ConsumerWidget {
     return Center(
       child: ref.watch(postsControllerProvider).when(
             data: (data) {
-              return ListView(
-                children: data
-                    .map(
-                      (post) => PostCardWidget(
-                        post: post,
-                        onTap: (postId) {
-                          GoRouter.of(context).push('/posts/$postId');
-                        },
-                      ),
-                    )
-                    .toList(),
-              );
+              return PostMobileView(posts: data);
             },
             error: (err, _) => Text(err.toString()),
             loading: () => const Center(

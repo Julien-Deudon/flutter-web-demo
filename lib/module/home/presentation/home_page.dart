@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web/core/const/breakpoints.dart';
 import 'package:flutter_web/module/home/home_binding.dart';
+import 'package:flutter_web/module/home/presentation/widgets/bottom_nav_bar_widget.dart';
+import 'package:flutter_web/module/home/presentation/widgets/side_nav_widget.dart';
 import 'package:flutter_web/module/posts/presentation/posts_page.dart';
 import 'package:flutter_web/module/settings/presentation/settings_page.dart';
 import 'package:flutter_web/module/users/presentation/users_page.dart';
 import 'package:flutter_web/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   HomePage({
@@ -37,6 +39,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     ref.listen(navigationControllerProvider, (previous, int next) {
       switch (next) {
         case 0:
@@ -49,46 +53,45 @@ class _HomePageState extends ConsumerState<HomePage> {
           context.go('/settings');
           break;
       }
-      _controller.animateToPage(next,
-          duration: const Duration(
-            milliseconds: 600,
-          ),
-          curve: Curves.ease);
+      _controller.animateToPage(
+        next,
+        duration: const Duration(
+          milliseconds: 600,
+        ),
+        curve: Curves.ease,
+      );
     });
 
     return Scaffold(
-      appBar: AppBar(),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: SalomonBottomBar(
-          currentIndex: ref.watch(navigationControllerProvider),
-          onTap: (index) => ref
-              .read(navigationControllerProvider.notifier)
-              .changeIndex(index),
-          items: [
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.person),
-              title: const Text('Users'),
-            ),
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.article),
-              title: const Text('Posts'),
-            ),
-            SalomonBottomBarItem(
-              icon: const Icon(Icons.settings),
-              title: const Text('Posts'),
+        appBar: AppBar(),
+        bottomNavigationBar: screenWidth < kBreakPointTablet
+            ? BottomNavBarWidget(
+                currentIndex: ref.watch(navigationControllerProvider),
+                onChange: (index) => ref
+                    .read(navigationControllerProvider.notifier)
+                    .changeIndex(index),
+              )
+            : null,
+        body: Row(
+          children: [
+            if (screenWidth > kBreakPointTablet)
+              SideNavWidget(
+                onChange: (index) => ref
+                    .read(navigationControllerProvider.notifier)
+                    .changeIndex(index),
+                currentIndex: ref.watch(navigationControllerProvider),
+              ),
+            Expanded(
+              child: PageView(
+                controller: _controller,
+                children: const [
+                  UsersPage(),
+                  PostsPage(),
+                  SettingsPage(),
+                ],
+              ),
             ),
           ],
-        ),
-      ),
-      body: PageView(
-        controller: _controller,
-        children: const [
-          UsersPage(),
-          PostsPage(),
-          SettingsPage(),
-        ],
-      ),
-    );
+        ));
   }
 }
