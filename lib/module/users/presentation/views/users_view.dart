@@ -18,7 +18,7 @@ class UsersView extends StatelessWidget {
     return GridView(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: _getCrossAxisCount(screenWidth),
-        mainAxisExtent: 256,
+        mainAxisExtent: 262,
       ),
       children: users.map((user) => UserWidget(user: user)).toList(),
     );
